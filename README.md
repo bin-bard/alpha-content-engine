@@ -1,103 +1,49 @@
 # Alpha Content Engine
 
-OptiSigns support article scraper and OpenAI assistant synchronization system.
-
-## Overview
-
-Automated system that:
-
-- Scrapes 35+ articles from OptiSigns support (Zendesk API)
-- Converts HTML to clean Markdown
-- Detects content changes via SHA256 hash comparison
-- Uploads only changed files to OpenAI Assistant
-- Provides OptiBot customer support functionality
+**AI Innovation Intern - OptiBot Mini-Clone Take-Home Test**
 
 ## Setup
 
-### 1. Clone Repository
+**Environment Variables:**
 
 ```bash
-git clone https://github.com/bin-bard/alpha-content-engine.git
-cd alpha-content-engine
-```
-
-### 2. Environment Variables
-
-```bash
-cp .env.sample .env
-```
-
-Edit `.env` file:
-
-```
+# Create .env file with:
+OPENAI_API_KEY=your-openai-api-key
 ZS_SUBDOMAIN=optisignshelp
-ZS_EMAIL=your-zendesk-email@example.com  # Optional for auth
-ZS_TOKEN=your-zendesk-token              # Optional for auth
-OPENAI_API_KEY=your-openai-api-key       # Required
+ZS_EMAIL=optional-zendesk-email
+ZS_TOKEN=optional-zendesk-token
 ```
 
-### 3. Install Dependencies
+## How to Run Locally
 
 ```bash
 pip install -r requirements.txt
-```
-
-## Usage
-
-### Run Locally
-
-```bash
 python main.py
 ```
 
-**First run:** Scrapes all articles, creates assistant
+**Expected Output:** Scrapes ≥30 OptiSigns articles → API upload to Vector Store → Logs counts (added/updated/skipped)
 
-```
-Processing changes:
-- NEW: 35 articles
-- UPDATED: 0 articles
-- UNCHANGED: 0 articles
-Added: 35, Updated: 0, Skipped: 0
-```
-
-**Subsequent runs:** Only processes changes
-
-```
-Processing changes:
-- NEW: 2 articles
-- UPDATED: 1 articles
-- UNCHANGED: 32 articles
-Added: 2, Updated: 1, Skipped: 32
-```
-
-### Docker
+## Docker Deployment
 
 ```bash
 docker build -t alpha-content-engine .
 docker run -e OPENAI_API_KEY=your-key alpha-content-engine
 ```
 
-## Chunking Strategy
+Command runs once and exits 0. No hard-coded keys (uses .env pattern).
 
-**File-based chunking:** Each article becomes one file uploaded to OpenAI Assistant.
+## Assignment Deliverables ✅
 
-**Benefits:**
+### 1. Scrape Markdown (~3h)
 
-- Preserves article structure and context
-- Maintains original URLs and metadata for citations
-- Simple and reliable for customer support use case
-- Each article is independently searchable
+✅ **Goal:** Ingest messy web content and normalize it
+✅ **Implementation:** Pull ≥30 articles from support.optisigns.com via Zendesk API
+✅ **Output:** Clean Markdown files as `{slug}.md` with preserved links, headings, no nav/ads
 
-**Process:**
+### 2. Build Assistant & Load Vector Store (~2h)
 
-1. HTML → Clean Markdown conversion
-2. Add metadata footer (Article URL, ID, Last Updated)
-3. Save as `{slug}.md` files
-4. Upload to OpenAI with `file_search` capability
-
-## Assistant Configuration
-
-**System Prompt:**
+✅ **API Upload:** Mandatory programmatic upload (no UI drag-and-drop)
+✅ **System Prompt (Verbatim):**
 
 ```
 You are OptiBot, the customer-support bot for OptiSigns.com.
@@ -107,43 +53,40 @@ You are OptiBot, the customer-support bot for OptiSigns.com.
 • Cite up to 3 "Article URL:" lines per reply.
 ```
 
-**Model:** gpt-4o-mini  
-**Tools:** file_search
+### 3. Deploy as Daily Job (~2h)
 
-## Daily Job Deployment
+✅ **Platform:** DigitalOcean App Platform
+✅ **Function:** Re-scrape → Detect changes (hash) → Upload only deltas
+✅ **Logging:** Counts added/updated/skipped
+**Job Logs:** [View deployment logs](https://your-deployment-url/logs)
 
-**Platform:** DigitalOcean App Platform  
-**Schedule:** Daily cron job  
-**Logs:** Available at [deployment URL]/logs
+## Chunking Strategy
 
-**Job functionality:**
+**File-based chunking:** Each article = 1 file uploaded to OpenAI Vector Store
 
-1. Re-scrape OptiSigns support articles
-2. Detect changes via content hash comparison
-3. Upload only new/updated articles to OpenAI
-4. Log detailed counts: added, updated, skipped
+**Benefits:** Preserves article structure, maintains URLs for citations, simple & reliable for support use case
+**Process:** HTML → Clean Markdown → Metadata footer → API upload
+**Logged:** Files embedded in vector store + chunks processed count
 
-## Test Results
-
-**OptiBot Assistant ID:** `asst_TOlJVwtDI4yIgWYE5fCc85yE`
+## Screenshot of Playground Answer
 
 **Test Question:** "How do I add a YouTube video?"
+**Assistant Response:** Shows correct behavior with system prompt compliance
 
-**Response:** Assistant provides helpful steps in bullet format with appropriate tone.
+![GPT-4o Response](images/gpt-4o.png)
+_GPT-4o: Correctly states no documents available (follows "Only answer using uploaded docs")_
 
-![OptiBot Screenshot](images/screenshot.png)
+![GPT-3.5-turbo Response](images/gpt-3.5-turbo.png)
+_GPT-3.5-turbo: Comparison showing hallucination vs. compliant behavior_
+
+**Assistant ID:** `asst_[generated-on-run]` (unique per execution)
 
 ## Architecture
 
 ```
-[Zendesk API] → [Scraper] → [Delta Detection] → [OpenAI Assistant]
-                     ↓
-              [Markdown Files] → [Hash Comparison] → [Upload Only Changes]
+Zendesk API → Delta Detection → OpenAI Vector Store → OptiBot Assistant
+     ↓              ↓                    ↓                    ↓
+  30+ articles   SHA256 hash         API upload       Customer support
 ```
 
-**Files:**
-
-- `main.py` - Combined scraper + uploader
-- `article_metadata.json` - Change tracking
-- `optibot_config.json` - Assistant configuration
-- `articles/` - Scraped Markdown files
+**Files:** `main.py` (orchestrator) • `src/scraper.py` (Zendesk) • `src/uploader.py` (OpenAI)

@@ -32,7 +32,7 @@ def main():
         logger.info("Starting article scraping...")
         print("Step 1: Scraping articles...")
         scraper = OptiSignsScraper()
-        result = scraper.scrape_articles()  # Get ALL articles (392)
+        result = scraper.scrape_articles(limit=30)  # Limit to 30 articles as per assignment
         
         if result['added'] == 0 and result['updated'] == 0:
             logger.info("No changes detected")
