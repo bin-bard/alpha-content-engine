@@ -3,9 +3,6 @@
 ## System Architecture
 
 ![Architecture](images/Architecture.png)
-_Complete OptiBot system architecture showing content pipeline, automation workflow, and component interactions_
-
-**Assistant ID:** `asst_xIPb9qfWwDLjiGwN8ho8BiQm` | **Repository:** `alpha-content-engine` (cryptic name as required)
 
 ## Screenshots
 
@@ -94,9 +91,9 @@ You are OptiBot, the customer-support bot for OptiSigns.com.
 
 ## Assignment Compliance
 
-| Requirement                | Status | Implementation                       |
-| -------------------------- | ------ | ------------------------------------ |
-| **Scrape ≥30 articles**    | PASS   | 392 articles found, 30 processed     |
+| Requirement                      | Status | Implementation                       |
+| -------------------------------- | ------ | ------------------------------------ |
+| **Scrape ≥30 articles**   | PASS   | 392 articles found, 30 processed     |
 | **API upload mandatory**   | PASS   | OpenAI API integration, no UI        |
 | **System prompt verbatim** | PASS   | Exact specification implemented      |
 | **Daily job deployment**   | PASS   | GitHub Actions (FREE alternative)    |

@@ -1,7 +1,5 @@
 # Project Reflection
 
-**AI Innovation Intern - OptiBot Mini-Clone Take-Home Test**
-
 ## Overall Concept Understanding of the Project
 
 This project demonstrates building an **intelligent content synchronization pipeline** that transforms external knowledge bases into AI-powered customer support systems. The core concept involves three integrated components:
@@ -43,6 +41,8 @@ The project showcases modern DevOps practices with containerized deployment, aut
 **Community Resources and Examples:** Leveraged GitHub examples, Stack Overflow solutions, and OpenAI community forums to understand common patterns and avoid reinventing solutions for solved problems.
 
 **Local Docker Testing:** Validated complete pipeline using Docker containers locally before cloud deployment, ensuring consistent behavior between development and production environments. This approach verified the containerization meets assignment requirements.
+
+**AI-Assisted Development:** Leveraged AI assistants like Cursor and ChatGPT as learning and development accelerators. These tools provided instant code suggestions, explained complex API patterns, helped debug error messages, and offered best practice recommendations. This significantly reduced the time needed to understand new technologies and APIs, allowing focus on architecture and business logic rather than syntax and boilerplate code.
 
 ## Your Thoughts, Suggestions on How OptiBots Can Be Improved, What Potential Challenges You Think We Will Be Facing
 
