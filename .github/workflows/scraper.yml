@@ -33,6 +33,15 @@ jobs:
           name: optibot-config
           path: .
 
+      - name: Check config file
+        run: |
+          if [ ! -f "optibot_config.json" ]; then
+            echo "No previous config found - will create new assistant"
+          else
+            echo "Previous config found - will reuse assistant"
+            cat optibot_config.json
+          fi
+
       - name: Run OptiBot scraper
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
