@@ -24,7 +24,11 @@ The project showcases modern DevOps practices with containerized deployment, aut
 
 **Modular Architecture with Single Entry Point:** Separated concerns into distinct modules (`scraper.py`, `uploader.py`) while maintaining assignment requirement of single `main.py` execution. This provides code clarity and maintainability while meeting containerization needs.
 
+**Assistant Persistence Strategy:** Implemented configuration file (`optibot_config.json`) to store assistant_id and vector_store_id for reuse across runs. This prevents creating new assistants unnecessarily and enables proper delta tracking for add/update counts.
+
 **Environment Variable Security Pattern:** Implemented `.env` configuration without exposing secrets in version control, following security best practices for API key management in production deployments.
+
+**GitHub Actions Over DigitalOcean:** Chose GitHub Actions for deployment instead of DigitalOcean Platform due to cost-effectiveness (FREE vs $5/month) while meeting all functional requirements. GitHub Actions provides automated daily scheduling, manual triggers, comprehensive logging, and eliminates deployment costs.
 
 ## How Do You Learn Something New Like This If You Haven't Learned It Before
 
@@ -37,6 +41,8 @@ The project showcases modern DevOps practices with containerized deployment, aut
 **Error-Driven Learning:** Implemented comprehensive error handling and logging early in development to understand failure modes and edge cases. This accelerated learning by providing clear feedback on what wasn't working.
 
 **Community Resources and Examples:** Leveraged GitHub examples, Stack Overflow solutions, and OpenAI community forums to understand common patterns and avoid reinventing solutions for solved problems.
+
+**Local Docker Testing:** Validated complete pipeline using Docker containers locally before cloud deployment, ensuring consistent behavior between development and production environments. This approach verified the containerization meets assignment requirements.
 
 ## Your Thoughts, Suggestions on How OptiBots Can Be Improved, What Potential Challenges You Think We Will Be Facing
 
@@ -59,6 +65,8 @@ The project showcases modern DevOps practices with containerized deployment, aut
 **API Cost Scaling:** OpenAI API costs could scale significantly with larger document sets, higher query volumes, and more sophisticated models, requiring careful cost monitoring and optimization strategies.
 
 **Content Drift and Maintenance:** OptiSigns documentation structure or hosting may change, requiring ongoing adaptation of scraping logic and potentially breaking the automated pipeline without proper monitoring.
+
+**Assistant State Persistence in Containers:** Solved using GitHub Actions artifacts to persist `optibot_config.json` between runs. Each execution downloads previous config (if exists) and uploads updated config for next run, ensuring assistant reuse and proper delta tracking in containerized environments.
 
 **Version Control Complexity:** Managing updates to existing documents in the OpenAI assistant without losing conversation context, creating duplicate content, or breaking existing citations poses ongoing technical challenges.
 

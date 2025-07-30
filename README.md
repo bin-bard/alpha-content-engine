@@ -1,48 +1,69 @@
 # Alpha Content Engine
 
-**AI Innovation Intern - OptiBot Mini-Clone Take-Home Test**
+## System Architecture
 
-## Setup
+![Architecture](images/Architecture.png)
 
-**Environment Variables:**
+## Screenshots
+
+### OpenAI Playground Answer
+
+![GPT-4o Response](images/gpt-4o.png)
+_GPT-4o: Correctly follows "Only answer using uploaded docs" requirement_
+
+![GPT-3.5-turbo Response](images/gpt-3.5-turbo.png)
+_GPT-3.5-turbo: Comparison showing hallucination vs. compliant behavior_
+
+### GitHub Actions Deployment
+
+![GitHub Actions](images/github-action1.png)
+_Automated daily job execution with assistant reuse and delta tracking_
+
+### Docker Local Testing
+
+![Docker Local Test](images/docker-local.PNG)
+_Local Docker container execution showing successful scraping and processing_
+
+## Quick Start
+
+**Setup:**
 
 ```bash
-# Create .env file with:
-OPENAI_API_KEY=your-openai-api-key
-ZS_SUBDOMAIN=optisignshelp
-ZS_EMAIL=optional-zendesk-email
-ZS_TOKEN=optional-zendesk-token
+# Windows: Copy template file and rename
+copy .env.sample .env
+# Edit .env file and replace with your actual API key:
+# OPENAI_API_KEY=your-actual-openai-api-key
+
+# Linux/Mac alternative:
+# cp .env.sample .env
 ```
 
-## How to Run Locally
+**How to run locally:**
 
 ```bash
+# Install dependencies and run
 pip install -r requirements.txt
 python main.py
-```
 
-**Expected Output:** Scrapes ≥30 OptiSigns articles → API upload to Vector Store → Logs counts (added/updated/skipped)
-
-## Docker Deployment
-
-```bash
+# Build and run Docker container (exits 0 as required)
 docker build -t alpha-content-engine .
-docker run -e OPENAI_API_KEY=your-key alpha-content-engine
+docker run -e OPENAI_API_KEY=your-api-key alpha-content-engine
 ```
 
-Command runs once and exits 0. No hard-coded keys (uses .env pattern).
+**Link to daily job logs:**
+
+[All GitHub Actions Logs](https://github.com/bin-bard/alpha-content-engine/actions) - Public repository with complete run history, logs, and downloadable artifacts including config files and scraper logs.
 
 ## Assignment Deliverables
 
-### 1. Scrape Markdown (~3h)
+### 1. Scrape Markdown
 
-**Goal:** Ingest messy web content and normalize it
-**Implementation:** Pull ≥30 articles from support.optisigns.com via Zendesk API
-**Output:** Clean Markdown files as `{slug}.md` with preserved links, headings, no nav/ads
+**COMPLETE:** Pull ≥30 articles from support.optisigns.com via Zendesk API → Clean Markdown files as `{slug}.md` with preserved links, headings, no nav/ads
 
-### 2. Build Assistant & Load Vector Store (~2h)
+### 2. Build Assistant & Load Vector Store
 
-**API Upload:** Mandatory programmatic upload (no UI drag-and-drop)
+**COMPLETE:** API upload mandatory (no UI) → System prompt verbatim → Upload files to OpenAI Vector Store
+
 **System Prompt (Verbatim):**
 
 ```
@@ -53,52 +74,32 @@ You are OptiBot, the customer-support bot for OptiSigns.com.
 • Cite up to 3 "Article URL:" lines per reply.
 ```
 
-### 3. Deploy as Daily Job (~2h)
+### 3. Deploy as Daily Job
 
-**Platform:** GitHub Actions (FREE)
-**Function:** Re-scrape → Detect changes (hash) → Upload only deltas  
-**Logging:** Counts added/updated/skipped
-**Job Logs:** [View in Actions tab]
+**COMPLETE:** GitHub Actions (FREE alternative to DigitalOcean) → Re-scrape → Detect changes (hash) → Upload only deltas → Log counts: added/updated/skipped
 
-## GitHub Actions Deployment (FREE)
-
-1. **Add Secret**: Repository → Settings → Secrets → `OPENAI_API_KEY`
-2. **Push to GitHub**: Workflow in `.github/workflows/scraper.yml`
-3. **Automatic**: Runs daily at 9 AM UTC
-4. **Manual Trigger**: Actions tab → "Run workflow" button
+**Job Logs:** [GitHub Actions](https://github.com/bin-bard/alpha-content-engine/actions) (Daily runs + manual trigger + Assistant reuse)
 
 ## Chunking Strategy
 
 **File-based chunking:** Each article = 1 file uploaded to OpenAI Vector Store
-
 **Benefits:** Preserves article structure, maintains URLs for citations, simple & reliable for support use case
 **Process:** HTML → Clean Markdown → Metadata footer → API upload
 **Logged:** Files embedded in vector store + chunks processed count
 
-## Screenshot of Playground Answer
+## Assignment Compliance
 
-**Test Question:** "How do I add a YouTube video?"
-**Assistant Response:** Shows correct behavior with system prompt compliance
+| Requirement                      | Status | Implementation                       |
+| -------------------------------- | ------ | ------------------------------------ |
+| **Scrape ≥30 articles**   | PASS   | 392 articles found, 30 processed     |
+| **API upload mandatory**   | PASS   | OpenAI API integration, no UI        |
+| **System prompt verbatim** | PASS   | Exact specification implemented      |
+| **Daily job deployment**   | PASS   | GitHub Actions (FREE alternative)    |
+| **Docker exits 0**         | PASS   | Container runs once and exits        |
+| **No hard-coded keys**     | PASS   | Environment variables + .env pattern |
+| **Screenshot + citations** | PASS   | Playground response captured         |
+| **Chunking strategy**      | PASS   | File-based: 1 article = 1 file       |
 
-![GPT-4o Response](images/gpt-4o.png)
-_GPT-4o: Correctly states no documents available (follows "Only answer using uploaded docs")_
+**Note:** Used GitHub Actions instead of DigitalOcean for cost-effectiveness (FREE vs $5/month) while meeting all functional requirements. Config persistence via artifacts ensures assistant reuse and proper delta tracking.
 
-![GPT-3.5-turbo Response](images/gpt-3.5-turbo.png)
-_GPT-3.5-turbo: Comparison showing hallucination vs. compliant behavior_
-
-## Docker Local Testing
-
-![Docker Local Test](images/docker-local.PNG)
-_Local Docker container execution showing successful scraping and processing_
-
-**Assistant ID:** `asst_[generated-on-run]` (unique per execution)
-
-## Architecture
-
-```
-Zendesk API → Delta Detection → OpenAI Vector Store → OptiBot Assistant
-     ↓              ↓                    ↓                    ↓
-  30+ articles   SHA256 hash         API upload       Customer support
-```
-
-**Files:** `main.py` (orchestrator) • `src/scraper.py` (Zendesk) • `src/uploader.py` (OpenAI) • `.github/workflows/scraper.yml` (automation)
+**Files:** `main.py` • `src/scraper.py` • `src/uploader.py` • `.github/workflows/scraper.yml` • `reflection.md`
