@@ -26,20 +26,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Download previous config (if exists)
-        uses: actions/download-artifact@v4
-        continue-on-error: true
-        with:
-          name: optibot-config
-          path: .
-
-      - name: Check config file
+      - name: Create config from environment (if assistant exists)
         run: |
-          if [ ! -f "optibot_config.json" ]; then
-            echo "No previous config found - will create new assistant"
+          if [ -n "${{ secrets.OPTIBOT_ASSISTANT_ID }}" ]; then
+            echo "Creating config from saved assistant ID..."
+            cat > optibot_config.json << EOF
+          {
+            "assistant_id": "${{ secrets.OPTIBOT_ASSISTANT_ID }}",
+            "vector_store_id": "${{ secrets.OPTIBOT_VECTOR_STORE_ID }}",
+            "last_upload": "$(date -u +"%Y-%m-%dT%H:%M:%S.%fZ")",
+            "source": "github_secrets"
+          }
+          EOF
+            echo "Previous config found - will reuse assistant: ${{ secrets.OPTIBOT_ASSISTANT_ID }}"
           else
-            echo "Previous config found - will reuse assistant"
-            cat optibot_config.json
+            echo "No assistant ID in secrets - will create new assistant"
           fi
 
       - name: Run OptiBot scraper
@@ -49,11 +50,36 @@ jobs:
         run: |
           python main.py
 
-      - name: Upload config for next run
+      - name: Extract assistant info for secrets update
+        run: |
+          if [ -f "optibot_config.json" ]; then
+            echo "=== CONFIG FILE CONTENT ==="
+            cat optibot_config.json
+            echo "=========================="
+            
+            # Extract assistant_id and vector_store_id
+            ASSISTANT_ID=$(cat optibot_config.json | grep -o '"assistant_id": "[^"]*"' | cut -d'"' -f4)
+            VECTOR_STORE_ID=$(cat optibot_config.json | grep -o '"vector_store_id": "[^"]*"' | cut -d'"' -f4)
+            
+            echo "Assistant ID: $ASSISTANT_ID"
+            echo "Vector Store ID: $VECTOR_STORE_ID"
+            
+            # Save to output for next step
+            echo "ASSISTANT_ID=$ASSISTANT_ID" >> $GITHUB_ENV
+            echo "VECTOR_STORE_ID=$VECTOR_STORE_ID" >> $GITHUB_ENV
+            
+            echo "⚠️  MANUAL ACTION REQUIRED:"
+            echo "To enable assistant reuse, add these GitHub Secrets:"
+            echo "Repository → Settings → Secrets → Actions"
+            echo "OPTIBOT_ASSISTANT_ID = $ASSISTANT_ID"
+            echo "OPTIBOT_VECTOR_STORE_ID = $VECTOR_STORE_ID"
+          fi
+
+      - name: Upload config backup
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: optibot-config
+          name: optibot-config-backup
           path: optibot_config.json
           retention-days: 90
 
