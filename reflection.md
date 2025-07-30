@@ -66,7 +66,7 @@ The project showcases modern DevOps practices with containerized deployment, aut
 
 **Content Drift and Maintenance:** OptiSigns documentation structure or hosting may change, requiring ongoing adaptation of scraping logic and potentially breaking the automated pipeline without proper monitoring.
 
-**Assistant State Persistence in Containers:** Solved using GitHub Actions artifacts to persist `optibot_config.json` between runs. Each execution downloads previous config (if exists) and uploads updated config for next run, ensuring assistant reuse and proper delta tracking in containerized environments.
+**Assistant State Persistence in Containers:** Solved using GitHub Actions artifacts to persist `optibot_config.json` between runs. Each execution downloads previous config (if exists) and uploads updated config for next run, ensuring assistant reuse and proper delta tracking in containerized environments. First run will show "artifact not found" warning (expected) since no previous config exists.
 
 **Version Control Complexity:** Managing updates to existing documents in the OpenAI assistant without losing conversation context, creating duplicate content, or breaking existing citations poses ongoing technical challenges.
 

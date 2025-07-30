@@ -3,6 +3,9 @@
 ## System Architecture
 
 ![Architecture](images/Architecture.png)
+_Complete OptiBot system architecture showing content pipeline, automation workflow, and component interactions_
+
+**Assistant ID:** `asst_xIPb9qfWwDLjiGwN8ho8BiQm` | **Repository:** `alpha-content-engine` (cryptic name as required)
 
 ## Screenshots
 
@@ -53,6 +56,8 @@ docker run -e OPENAI_API_KEY=your-api-key alpha-content-engine
 **Link to daily job logs:**
 
 [All GitHub Actions Logs](https://github.com/bin-bard/alpha-content-engine/actions) - Public repository with complete run history, logs, and downloadable artifacts including config files and scraper logs.
+
+**Note:** First run will show "artifact not found" warning (expected behavior) as no previous config exists. Assistant reuse starts from second run onwards.
 
 ## Assignment Deliverables
 
