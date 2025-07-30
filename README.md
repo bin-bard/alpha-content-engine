@@ -89,9 +89,9 @@ You are OptiBot, the customer-support bot for OptiSigns.com.
 
 ## Assignment Compliance
 
-| Requirement                      | Status | Implementation                       |
-| -------------------------------- | ------ | ------------------------------------ |
-| **Scrape ≥30 articles**   | PASS   | 392 articles found, 30 processed     |
+| Requirement                | Status | Implementation                       |
+| -------------------------- | ------ | ------------------------------------ |
+| **Scrape ≥30 articles**    | PASS   | 392 articles found, 30 processed     |
 | **API upload mandatory**   | PASS   | OpenAI API integration, no UI        |
 | **System prompt verbatim** | PASS   | Exact specification implemented      |
 | **Daily job deployment**   | PASS   | GitHub Actions (FREE alternative)    |
