@@ -1,35 +1,36 @@
-# Environment variables (sensitive)
+# Environment variables
 .env
+*.env
 
-# Generated metadata files
-article_metadata.json
-optibot_config.json
-
-# Temporary files
-temp_*.md
-
-# Python cache
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
+*.so
+.cache
+.pytest_cache/
 
-# Virtual environments
-venv/
-env/
-ENV/
+# Logs
+*.log
+optisigns_uploader.log
 
-# IDE files
+# Temporary files
+temp_*
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS files
-.DS_Store
-Thumbs.db
-
-# Logs
-logs/
-*.log 
+# Project specific
+article_metadata.json
+optibot_config.json
+articles/

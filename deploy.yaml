@@ -1,0 +1,30 @@
+# DigitalOcean App Platform - Job Configuration
+# Deploy this as a scheduled job on DigitalOcean App Platform
+
+name: alpha-content-engine
+services: []
+jobs:
+  - name: optibot-scraper
+    source_dir: /
+    github:
+      repo: your-username/your-repo-name # Replace with your actual repo
+      branch: main
+    image:
+      registry_type: DOCKER_HUB
+      registry: your-dockerhub-username # Replace with your Docker Hub username
+      repository: alpha-content-engine
+      tag: latest
+    environment_slug: docker
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    kind: JOB
+    schedule: "0 9 * * *" # Daily at 9 AM UTC
+    env:
+      - key: OPENAI_API_KEY
+        scope: JOB
+        type: SECRET
+        value: your-openai-api-key # Set this in DigitalOcean dashboard
+      - key: ZS_SUBDOMAIN
+        scope: JOB
+        value: optisignshelp
+region: nyc1

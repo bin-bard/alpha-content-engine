@@ -58,7 +58,16 @@ You are OptiBot, the customer-support bot for OptiSigns.com.
 ✅ **Platform:** DigitalOcean App Platform
 ✅ **Function:** Re-scrape → Detect changes (hash) → Upload only deltas
 ✅ **Logging:** Counts added/updated/skipped
-**Job Logs:** [View deployment logs](https://your-deployment-url/logs)
+**Job Logs:** [Deploy with deploy.yaml file provided]
+
+## DigitalOcean Deployment Guide
+
+1. **Push to GitHub** with cryptic repo name (e.g., `content-sync-engine`)
+2. **Create DigitalOcean App** using `deploy.yaml` configuration
+3. **Set Environment Variables** in DigitalOcean dashboard:
+   - `OPENAI_API_KEY` (secret)
+   - `ZS_SUBDOMAIN=optisignshelp`
+4. **Schedule**: Runs daily at 9 AM UTC via `deploy.yaml`
 
 ## Chunking Strategy
 
