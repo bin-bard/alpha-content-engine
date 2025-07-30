@@ -55,19 +55,17 @@ You are OptiBot, the customer-support bot for OptiSigns.com.
 
 ### 3. Deploy as Daily Job (~2h)
 
-**Platform:** Render (FREE tier available)
+**Platform:** GitHub Actions (FREE)
 **Function:** Re-scrape → Detect changes (hash) → Upload only deltas  
 **Logging:** Counts added/updated/skipped
-**Job Logs:** [View in Render dashboard]
+**Job Logs:** [View in Actions tab]
 
-## Render Deployment Guide (FREE)
+## GitHub Actions Deployment (FREE)
 
-1. **Push to GitHub** with cryptic repo name (already: `bin-bard/alpha-content-engine`)
-2. **Create Render Cron Job** from GitHub repository
-3. **Set Environment Variables** in Render dashboard:
-   - `OPENAI_API_KEY` (your key)
-   - `ZS_SUBDOMAIN=optisignshelp`
-4. **Schedule**: Runs daily at 9 AM UTC (FREE tier: 750 hours/month)
+1. **Add Secret**: Repository → Settings → Secrets → `OPENAI_API_KEY`
+2. **Push to GitHub**: Workflow in `.github/workflows/scraper.yml`
+3. **Automatic**: Runs daily at 9 AM UTC
+4. **Manual Trigger**: Actions tab → "Run workflow" button
 
 ## Chunking Strategy
 
@@ -88,6 +86,11 @@ _GPT-4o: Correctly states no documents available (follows "Only answer using upl
 ![GPT-3.5-turbo Response](images/gpt-3.5-turbo.png)
 _GPT-3.5-turbo: Comparison showing hallucination vs. compliant behavior_
 
+## Docker Local Testing
+
+![Docker Local Test](images/docker-local.PNG)
+_Local Docker container execution showing successful scraping and processing_
+
 **Assistant ID:** `asst_[generated-on-run]` (unique per execution)
 
 ## Architecture
@@ -98,4 +101,4 @@ Zendesk API → Delta Detection → OpenAI Vector Store → OptiBot Assistant
   30+ articles   SHA256 hash         API upload       Customer support
 ```
 
-**Files:** `main.py` (orchestrator) • `src/scraper.py` (Zendesk) • `src/uploader.py` (OpenAI)
+**Files:** `main.py` (orchestrator) • `src/scraper.py` (Zendesk) • `src/uploader.py` (OpenAI) • `.github/workflows/scraper.yml` (automation)

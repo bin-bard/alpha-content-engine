@@ -2,4 +2,5 @@ openai
 requests
 beautifulsoup4
 markdownify
-python-dotenv 
+python-dotenv
+flask 
