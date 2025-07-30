@@ -1,0 +1,14 @@
+# Render.com configuration for OptiBot scraper
+# This file is optional - Render can auto-detect from Dockerfile
+
+services:
+  - type: cron
+    name: alpha-content-engine
+    env: docker
+    schedule: "0 9 * * *" # Daily at 9 AM UTC
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false # Set manually in Render dashboard
+      - key: ZS_SUBDOMAIN
+        value: optisignshelp

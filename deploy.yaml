@@ -7,13 +7,14 @@ jobs:
   - name: optibot-scraper
     source_dir: /
     github:
-      repo: your-username/your-repo-name # Replace with your actual repo
+      repo: bin-bard/alpha-content-engine # Your actual GitHub repo
       branch: main
-    image:
-      registry_type: DOCKER_HUB
-      registry: your-dockerhub-username # Replace with your Docker Hub username
-      repository: alpha-content-engine
-      tag: latest
+    # Use source code build instead of Docker Hub
+    # image:
+    #   registry_type: DOCKER_HUB
+    #   registry: your-dockerhub-username
+    #   repository: alpha-content-engine
+    #   tag: latest
     environment_slug: docker
     instance_count: 1
     instance_size_slug: basic-xxs

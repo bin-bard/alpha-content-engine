@@ -32,18 +32,18 @@ docker run -e OPENAI_API_KEY=your-key alpha-content-engine
 
 Command runs once and exits 0. No hard-coded keys (uses .env pattern).
 
-## Assignment Deliverables ✅
+## Assignment Deliverables
 
 ### 1. Scrape Markdown (~3h)
 
-✅ **Goal:** Ingest messy web content and normalize it
-✅ **Implementation:** Pull ≥30 articles from support.optisigns.com via Zendesk API
-✅ **Output:** Clean Markdown files as `{slug}.md` with preserved links, headings, no nav/ads
+**Goal:** Ingest messy web content and normalize it
+**Implementation:** Pull ≥30 articles from support.optisigns.com via Zendesk API
+**Output:** Clean Markdown files as `{slug}.md` with preserved links, headings, no nav/ads
 
 ### 2. Build Assistant & Load Vector Store (~2h)
 
-✅ **API Upload:** Mandatory programmatic upload (no UI drag-and-drop)
-✅ **System Prompt (Verbatim):**
+**API Upload:** Mandatory programmatic upload (no UI drag-and-drop)
+**System Prompt (Verbatim):**
 
 ```
 You are OptiBot, the customer-support bot for OptiSigns.com.
@@ -55,19 +55,19 @@ You are OptiBot, the customer-support bot for OptiSigns.com.
 
 ### 3. Deploy as Daily Job (~2h)
 
-✅ **Platform:** DigitalOcean App Platform
-✅ **Function:** Re-scrape → Detect changes (hash) → Upload only deltas
-✅ **Logging:** Counts added/updated/skipped
-**Job Logs:** [Deploy with deploy.yaml file provided]
+**Platform:** Render (FREE tier available)
+**Function:** Re-scrape → Detect changes (hash) → Upload only deltas  
+**Logging:** Counts added/updated/skipped
+**Job Logs:** [View in Render dashboard]
 
-## DigitalOcean Deployment Guide
+## Render Deployment Guide (FREE)
 
-1. **Push to GitHub** with cryptic repo name (e.g., `content-sync-engine`)
-2. **Create DigitalOcean App** using `deploy.yaml` configuration
-3. **Set Environment Variables** in DigitalOcean dashboard:
-   - `OPENAI_API_KEY` (secret)
+1. **Push to GitHub** with cryptic repo name (already: `bin-bard/alpha-content-engine`)
+2. **Create Render Cron Job** from GitHub repository
+3. **Set Environment Variables** in Render dashboard:
+   - `OPENAI_API_KEY` (your key)
    - `ZS_SUBDOMAIN=optisignshelp`
-4. **Schedule**: Runs daily at 9 AM UTC via `deploy.yaml`
+4. **Schedule**: Runs daily at 9 AM UTC (FREE tier: 750 hours/month)
 
 ## Chunking Strategy
 
