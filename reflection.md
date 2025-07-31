@@ -26,7 +26,7 @@ The project showcases modern DevOps practices with containerized deployment, aut
 
 **Environment Variable Security Pattern:** Implemented `.env` configuration without exposing secrets in version control, following security best practices for API key management in production deployments.
 
-**GitHub Actions Over DigitalOcean:** Chose GitHub Actions for deployment instead of DigitalOcean Platform due to cost-effectiveness (FREE vs $5/month) while meeting all functional requirements. GitHub Actions provides automated daily scheduling, manual triggers, comprehensive logging, and eliminates deployment costs.
+**GitHub Actions Over DigitalOcean:** Chose GitHub Actions for deployment instead of DigitalOcean Platform due to cost-effectiveness, as it provides a free alternative for this project's needs. GitHub Actions provides automated daily scheduling, manual triggers, comprehensive logging, and eliminates deployment costs.
 
 ## How Do You Learn Something New Like This If You Haven't Learned It Before
 
